@@ -1,0 +1,14 @@
+###
+POST http://localhost:8080/api/web/host/register
+Accept: application/json
+
+{
+  "firstName": "Markus",
+  "lastname": "Gebert",
+  "email": "markus.gebert@gmail.com"
+}
+
+<> 2022-12-11T205900.400.json
+
+
+###
