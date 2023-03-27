@@ -49,12 +49,14 @@ public class MatchController {
     MatchRepository matchRepo;
 
     @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
+    private SimpMessagingTemplate messagingTemplate;
+
 
     @GetMapping("/match-cards/{userId}")
     public ResponseEntity<List<User>> matchCards(
             @PathVariable("userId") String userId
     ) {
+
         Optional<User> optionalUser = userRepo.findById(userId);
         System.out.println("Match Cards");
         if (optionalUser.isPresent()) {
@@ -76,6 +78,9 @@ public class MatchController {
         System.out.println("EventID: " + eventId);
         if (optionalEvent.isPresent()) {
             event = optionalEvent.get();
+//            if(userRepo.) {
+//
+//            }
             User user = userRepo.save(new User(event));
             return ResponseEntity.ok(user);
         } else {
@@ -92,14 +97,20 @@ public class MatchController {
         Optional<User> optionalUser = userRepo.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            user.setUserStatus(UserStatus.ACTIVE);
-            Set<String> imageNames = new HashSet<>();
-            imageNames.add(picture.getOriginalFilename());
-            user.setImageNames(imageNames);
-            fileStorageService.storeFile(picture, user);
-            userRepo.save(user);
-            List<User> activeUsers = matchService.createMatches(user);
-            return ResponseEntity.ok(activeUsers);
+            if(user.getUserStatus().equals(UserStatus.REGISTERED)) {
+                user.setUserStatus(UserStatus.ACTIVE);
+                Set<String> imageNames = new HashSet<>();
+                imageNames.add(picture.getOriginalFilename());
+                user.setImageNames(imageNames);
+                fileStorageService.storeFile(picture, user);
+                userRepo.save(user);
+                List<User> activeUsers = matchService.createMatches(user);
+                return ResponseEntity.ok(activeUsers);
+            } else {
+                List<User> activeUsers = matchService.getMatchCards(user);
+                return ResponseEntity.ok(activeUsers);
+            }
+
         } else {
             throw new NullPointerException("User does not exist.");
         }
@@ -122,7 +133,7 @@ public class MatchController {
         return null;
     }
 
-    @PutMapping("/swipe/{matcherId}/{matcheeId}")
+    @PostMapping("/swipe/{matcherId}/{matcheeId}")
     private ResponseEntity<?> swipe(
             @PathVariable("matcherId") String matcherId,
             @PathVariable("matcheeId") String matcheeId,
@@ -157,7 +168,13 @@ public class MatchController {
                         match.setMatchStatus(MatchStatus.MATCH);
                         correspondingMatch.setMatchStatus(MatchStatus.MATCH);
                         matchRepo.save(match);
+                        // send a notification to the corresponding React Native client
+                        String destination = "/topic/" + matcheeId;
+                        messagingTemplate.convertAndSend(destination, matcherId);
+
                         return ResponseEntity.ok(match);
+                        //Hier
+//                        return ResponseEntity.ok(match);
                 }
                 break;
             default:
@@ -186,18 +203,18 @@ public class MatchController {
 
     }
 
-    @MessageMapping("/message")
-    @SendTo("/chatroom/public")
-    public Message receiveMessage(@Payload Message message){
-        return message;
-    }
-
-    @MessageMapping("/private-message")
-    public Message recMessage(@Payload Message message){
-        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(),"/private",message);
-        System.out.println(message.toString());
-        return message;
-    }
+//    @MessageMapping("/message")
+//    @SendTo("/chatroom/public")
+//    public Message receiveMessage(@Payload Message message){
+//        return message;
+//    }
+//
+//    @MessageMapping("/private-message")
+//    public Message recMessage(@Payload Message message){
+//        messagingTemplate.convertAndSendToUser(message.getReceiverName(),"/private",message);
+//        System.out.println(message.toString());
+//        return message;
+//    }
 
     @GetMapping("/image/{userId}")
     @ResponseBody
