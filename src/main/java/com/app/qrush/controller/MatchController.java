@@ -48,9 +48,65 @@ public class MatchController {
     @Autowired
     MatchRepository matchRepo;
 
+//    @Autowired
+//    private SimpMessagingTemplate messagingTemplate;
     @Autowired
-    private SimpMessagingTemplate messagingTemplate;
+    private SimpMessagingTemplate simpMessagingTemplate;
 
+
+    @MessageMapping("/private-message")
+    public Message recMessage(@Payload Message message){
+        Optional<User> optionalMatcher = userRepo.findById(message.getSenderName());
+        Optional<User> optionalMatchee = userRepo.findById(message.getReceiverName());
+        System.out.println("Connected");
+        if (optionalMatcher.isEmpty()) {
+            throw new NullPointerException("Matcher Not Found");
+        }
+        if (optionalMatchee.isEmpty()) {
+            throw new NullPointerException("Matchee Not Found");
+        }
+        User matcher = optionalMatcher.get();
+        User matchee = optionalMatchee.get();
+        Match match = matchService.findMatch(matcher, matchee);
+        switch (message.getMessage()) {
+            case NOT_INTERESTED:
+                match.setMatchStatus(MatchStatus.NOT_INTERESTED);
+                matchRepo.save(match);
+//                return new ResponseEntity<>(HttpStatus.OK);
+            case INTERESTED:
+                match.setMatchStatus(MatchStatus.INTERESTED);
+                matchRepo.save(match);
+                Match correspondingMatch = matchService.findMatch(matchee, matcher);
+                switch (correspondingMatch.getMatchStatus()) {
+//                    case UNMATCHED:
+//                    case NOT_INTERESTED:
+//                        return new ResponseEntity<>(HttpStatus.OK);
+                    case INTERESTED:
+                        match.setMatchStatus(MatchStatus.MATCH);
+                        correspondingMatch.setMatchStatus(MatchStatus.MATCH);
+                        matchRepo.save(match);
+                        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(),"/private",message);
+                        return message;
+
+//                        System.out.println(message.toString());
+                        // send a notification to the corresponding React Native client
+//                        String destination = "/topic/" + matcheeId;
+//                        messagingTemplate.convertAndSend(destination, matcherId);
+
+//                        return ResponseEntity.ok(match);
+                    //Hier
+//                        return ResponseEntity.ok(match);
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("MatchStatus is wrong");
+
+
+        }
+        return message;
+//        throw new NullPointerException();
+
+    }
 
     @GetMapping("/match-cards/{userId}")
     public ResponseEntity<List<User>> matchCards(
@@ -169,8 +225,8 @@ public class MatchController {
                         correspondingMatch.setMatchStatus(MatchStatus.MATCH);
                         matchRepo.save(match);
                         // send a notification to the corresponding React Native client
-                        String destination = "/topic/" + matcheeId;
-                        messagingTemplate.convertAndSend(destination, matcherId);
+//                        String destination = "/topic/" + matcheeId;
+//                        messagingTemplate.convertAndSend(destination, matcherId);
 
                         return ResponseEntity.ok(match);
                         //Hier
