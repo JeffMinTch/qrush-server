@@ -6,11 +6,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-@SpringBootApplication
+@SpringBootApplication()
 @EnableConfigurationProperties({
 		FileStorageProperties.class,
 		ApplicationProperties.class
 })
+
 public class QrushApplication {
 
 	public static void main(String[] args) {

@@ -54,6 +54,8 @@ public class MatchController {
     private SimpMessagingTemplate simpMessagingTemplate;
 
 
+
+
     @MessageMapping("/private-message")
     public Message recMessage(@Payload Message message){
         Optional<User> optionalMatcher = userRepo.findById(message.getSenderName());
@@ -294,7 +296,7 @@ public class MatchController {
         try {
             Path targetPath = Paths.get(user.getUuid());
             System.out.println(targetPath);
-            file = fileStorageService.loadFileAsResource(targetPath, "image.jpg");
+            file = fileStorageService.loadFileAsResource(user, "image.jpg");
 //            audioUnit.getImageFileName(), audioUnit.getArtistAlias().getArtist().getUser().getUuid()
         } catch (Exception e) {
             e.printStackTrace();

@@ -18,11 +18,15 @@ public class User {
     @Column(name = "uuid", unique = true)
     private String uuid;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "event_fk")
     private Event event;
 
-    @ElementCollection
+//    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+//    @JoinColumn(name = "events_fk", referencedColumnName = "uuid") // Hier die entsprechende Spaltenbezeichnung einfügen
+//    private Event event;
+
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "image_names")
     private Set<String> imageNames;
 

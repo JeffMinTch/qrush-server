@@ -1,0 +1,44 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:sqlserver://qrush.database.windows.net:1433;database=qrush;user={your_username_here};password={your_password_here};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;authentication=ActiveDirectoryPassword #jdbc:sqlserver://qrush.database.windows.net:1433;database=qrush;user=maximilian-mintchev@qrush;password=Dynamo1953;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30; #tcp:qrush.database.windows.net,1433;Initial Catalog=qrush;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication="Active Directory Default"; #jdbc:sqlserver://qrush.database.windows.net:1433;database=qrush #:1433/qrush?useSSL=true&requireSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=UTC
+#      SPRING_DATASOURCE_USERNAME: maximilian-mintchev
+#      SPRING_DATASOURCE_PASSWORD: Dynamo1953
+
+#version: '3.7'
+#
+#services:
+#  db:
+#    image: mysql:8.0
+#    environment:
+#      MYSQL_ROOT_PASSWORD: Dynamo1953
+#      MYSQL_USER: maximilian-mintchev
+#      MYSQL_PASSWORD: Dynamo1953
+#      MYSQL_DATABASE: qrush
+#    volumes:
+#      - ./data:/var/lib/mysql
+#    ports:
+#      - "3307:3306" # Änderung: Ändere den Port auf 3306, um ihn mit dem Standard MySQL-Port zu verbinden.
+#  app:
+#    build:
+#      context: .
+#    depends_on:
+#      - db
+#    ports:
+#      - "8080:8080"
+#    environment: # Neue Umgebungsvariablen hinzugefügt, um die Verbindungsdaten für die Spring Boot-Anwendung zu setzen
+#      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.microsoft.jdbc.sqlserver.SQLServerDriver
+#      SPRING_DATASOURCE_URL: jdbc:sqlserver://qrush.database.windows.net:1433/qrush #useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+#      SPRING_DATASOURCE_USERNAME: maximilian-mintchev
+#      SPRING_DATASOURCE_PASSWORD: Dynamo1953
+#      SPRING_JPA_DATABASE-PLATFORM: org.hibernate.dialect.SQLServerDialect
+#      SPRING_JPA_HIBERNATE_DDL: update
+#
+
+

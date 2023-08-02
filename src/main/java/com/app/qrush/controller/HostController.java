@@ -113,10 +113,10 @@ public class HostController {
                         optionalLocation.get()
                 ));
 
-                String qrCodeImagePath = fileStorageService.createQRStoragePath(event).toString();
+//                String qrCodeImagePath = fileStorageService.createQRStoragePath(event).toString();
                 try {
 
-                    qrCodeGenerator.generateQRCodeImage(event, 250, 250, qrCodeImagePath);
+                    qrCodeGenerator.generateQRCodeImage(event, 250, 250);
                     mailService.sendEmailWithAttachment();
                 } catch (WriterException | IOException e) {
                     e.printStackTrace();
