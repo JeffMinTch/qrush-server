@@ -13,21 +13,22 @@ public class Event {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(name = "uuid", unique = true)
     private String uuid;
 
-    @Column(name = "name", updatable = true, nullable = false)
+    @Column(name = "name")
     private String name;
 
-    @Column(name="start", updatable = false, nullable = false)
+    @Column(name="start")
     private Date start;
 
-    @Column(name="end", updatable = false, nullable = false)
+    @Column(name="end")
     private Date end;
 
-    @Column(name="creation_date", updatable = false, nullable = false)
+    @Column(name="creation_date")
     private LocalDateTime creationDate;
 
-    @Column(name = "user_count", updatable = true, nullable = false)
+    @Column(name = "user_count")
     private int userCount;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
@@ -37,7 +38,7 @@ public class Event {
     public Event() {
     }
 
-    public Event(String name, Date start, Date end, Location location) {
+    public Event( String name, Date start, Date end, Location location) {
         this.name = name;
         this.start = start;
         this.end = end;
