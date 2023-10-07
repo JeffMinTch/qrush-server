@@ -15,8 +15,8 @@ jobs:
 
       - name: Push to GitLab
         run: |
-          git remote add gitlab https://gitlab.com/JeffMinTch/qrush-server.git
-          git pull gitlab master
+          git remote add gitlab https://gitlab.com/qrush-dating/qrush-server.git
+          git pull gitlab master  
           git push origin master
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
