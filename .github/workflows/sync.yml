@@ -1,0 +1,22 @@
+name: Sync with GitLab
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Push to GitLab
+        run: |
+          git remote add gitlab https://gitlab.com/JeffMinTch/qrush-server.git
+          git pull gitlab master
+          git push origin master
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
