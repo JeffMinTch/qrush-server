@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -53,7 +54,8 @@ public class MatchService {
             Optional<List<User>> optionalActiveUsers = userRepository.findAllByEventAndUserStatus(optionalEvent.get(), UserStatus.ACTIVE);
             if (optionalActiveUsers.isPresent()) {
                 List<User> activeUsers = optionalActiveUsers.get();
-                return activeUsers.stream().filter(activeUser -> activeUser != matcher).collect(Collectors.toList());
+                List<User> matchUsers = activeUsers.stream().filter(activeUser -> !Objects.equals(activeUser.getUuid(), matcher.getUuid())).collect(Collectors.toList());
+                return matchUsers;
             } else {
                 throw new NullPointerException();
             }

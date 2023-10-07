@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mysql://qrush.mysql.database.azure.com/qrush?sslmode=require&useSSL=true&allowPublicKeyRetrieval=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    url: jdbc:mysql://85.215.45.13/qrush_db?sslmode=require&useSSL=true&allowPublicKeyRetrieval=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
 
-    username: mintchev
-    password: Dynamo1953
+    username: qrush_user
+    password: Wsd12Maukha2502#
   jpa:
     show-sql: true
     hibernate:

@@ -88,6 +88,8 @@ public class MatchController {
                         correspondingMatch.setMatchStatus(MatchStatus.MATCH);
                         matchRepo.save(match);
                         simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(),"/private",message);
+                        simpMessagingTemplate.convertAndSendToUser(message.getSenderName(),"/private",message);
+
                         return message;
 
 //                        System.out.println(message.toString());
@@ -140,6 +142,7 @@ public class MatchController {
 //
 //            }
             User user = userRepo.save(new User(event));
+            System.out.println("New User was created:" + user.getUuid());
             return ResponseEntity.ok(user);
         } else {
             throw new NullPointerException("Scanned Event Id doesn't exist");

@@ -92,7 +92,7 @@ public class QRCodeGenerator {
         byte[] pngData = pngOutputStream.toByteArray();
 
         // Upload the QR code image to Azure Blob Storage
-        String fileName = "img/" + "qr-codes/" + event.getUuid() + ".png"; // Pseudopfad angeben
+        String fileName = "img/" + "qr-codes/" + event.getName() + ".png"; // Pseudopfad angeben
         BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
         BlobClient blobClient = containerClient.getBlobClient(fileName);
         blobClient.upload(new ByteArrayInputStream(pngData), pngData.length, true);
@@ -113,7 +113,8 @@ public class QRCodeGenerator {
     }
 
     private String generateQRLink(Event event) {
-        return this.getBaseUri() + this.getEventUri() + "/" + event.getUuid();
+        String eventUri = this.getEventUri();
+        return this.getEventUri() + "/" + event.getUuid();
     }
 
 }

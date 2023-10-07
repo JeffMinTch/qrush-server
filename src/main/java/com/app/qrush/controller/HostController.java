@@ -117,13 +117,14 @@ public class HostController {
                 try {
 
                     qrCodeGenerator.generateQRCodeImage(event, 250, 250);
-                    mailService.sendEmailWithAttachment();
+//                    mailService.sendEmailWithAttachment();
                 } catch (WriterException | IOException e) {
                     e.printStackTrace();
 
-                } catch (MessagingException e) {
-                    throw new RuntimeException(e);
                 }
+//                catch (MessagingException e) {
+//                    throw new RuntimeException(e);
+//                }
                 return ResponseEntity.ok(event);
             } else {
                 Event event = eventRepo.findEventByName(name).get();
