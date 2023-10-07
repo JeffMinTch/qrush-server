@@ -91,7 +91,7 @@ public class HostController {
             throw new NullPointerException("Host is null");
         }
     }
-
+    //das ist ein test kommentar
     @PostMapping("/party/{locationId}")
     public ResponseEntity<Event> createEvent(
             @PathVariable("locationId") String locationId,
